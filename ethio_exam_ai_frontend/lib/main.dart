@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
+import 'core/providers/schedule_provider.dart';
 import 'features/auth/presentation/pages/login_screen.dart';
+import 'shared/widgets/main_shell.dart';
 
 void main() {
-  runApp(const EthioExamAI());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ScheduleProvider(),
+      child: const EthioExamAI(),
+    ),
+  );
 }
 
 class EthioExamAI extends StatelessWidget {
@@ -15,7 +23,11 @@ class EthioExamAI extends StatelessWidget {
       title: 'Ethio-Exam AI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const LoginScreen(),
+      initialRoute: '/login',
+      routes: {
+        '/login': (_) => const LoginScreen(),
+        '/home': (_) => const MainShell(),
+      },
     );
   }
 }
