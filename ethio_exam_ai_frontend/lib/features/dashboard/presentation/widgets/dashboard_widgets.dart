@@ -20,7 +20,7 @@ class ExamReadinessWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.academicBlue.withOpacity(0.4),
+            color: AppColors.academicBlue.withValues(alpha: 0.4),
             blurRadius: 12,
             offset: const Offset(0, 6),
           )
@@ -103,7 +103,7 @@ class DailyStreakCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -175,7 +175,7 @@ class UpcomingScheduleCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -249,8 +249,8 @@ class ExamCountdownCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: days < 30
-              ? AppColors.error.withOpacity(0.3)
-              : AppColors.growthGreen.withOpacity(0.3),
+              ? AppColors.error.withValues(alpha: 0.3)
+              : AppColors.growthGreen.withValues(alpha: 0.3),
         ),
       ),
       child: Row(

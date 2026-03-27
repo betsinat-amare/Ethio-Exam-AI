@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../features/dashboard/presentation/pages/dashboard_screen.dart';
+import '../../features/subjects/presentation/pages/subjects_screen.dart';
 
 class PlaceholderPage extends StatelessWidget {
   final String title;
@@ -15,7 +16,7 @@ class PlaceholderPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: AppColors.academicBlue.withOpacity(0.3)),
+            Icon(icon, size: 64, color: AppColors.academicBlue.withValues(alpha: 0.3)),
             const SizedBox(height: 16),
             Text(
               '$title — Coming Soon',
@@ -43,7 +44,7 @@ class _MainShellState extends State<MainShell> {
 
   final List<Widget> _pages = const [
     DashboardScreen(),
-    PlaceholderPage(title: 'Subjects', icon: Icons.menu_book_outlined),
+    SubjectsScreen(),
     PlaceholderPage(title: 'AI Scan', icon: Icons.camera_alt_outlined),
     PlaceholderPage(title: 'Schedule', icon: Icons.calendar_today_outlined),
     PlaceholderPage(title: 'Profile', icon: Icons.person_outlined),
@@ -61,7 +62,7 @@ class _MainShellState extends State<MainShell> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 12,
               offset: const Offset(0, -3),
             ),
