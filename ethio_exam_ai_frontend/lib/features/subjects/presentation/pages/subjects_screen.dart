@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/user_provider.dart';
 import '../../data/subjects_data.dart';
 import 'question_filter_screen.dart';
 
@@ -8,6 +9,16 @@ class SubjectsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
+    final studentStream = userProvider.stream;
+
+    final filteredSubjects = SubjectsData.subjects.where((s) {
+      if (s.stream == SubjectStream.common) return true;
+      if (studentStream == StudentStream.natural && s.stream == SubjectStream.natural) return true;
+      if (studentStream == StudentStream.social && s.stream == SubjectStream.social) return true;
+      return false;
+    }).toList();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF0F2F8),
       appBar: AppBar(
@@ -48,9 +59,9 @@ class SubjectsScreen extends StatelessWidget {
                 mainAxisSpacing: 14,
                 childAspectRatio: 1.0,
               ),
-              itemCount: SubjectsData.subjects.length,
+              itemCount: filteredSubjects.length,
               itemBuilder: (context, index) {
-                final subject = SubjectsData.subjects[index];
+                final subject = filteredSubjects[index];
                 return _SubjectCard(
                   subject: subject,
                   onTap: () {

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/user_provider.dart';
 import '../widgets/dashboard_widgets.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -7,12 +8,14 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF0F2F8),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            _buildAppBar(context),
+            _buildAppBar(context, userProvider),
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               sliver: SliverList(
@@ -41,7 +44,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(BuildContext context, UserProvider user) {
     return SliverAppBar(
       floating: true,
       backgroundColor: const Color(0xFFF0F2F8),
@@ -57,14 +60,14 @@ class DashboardScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _greeting(),
+                    '${_greeting()} · ${user.streamName}',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 13,
                     ),
                   ),
-                  const Text(
-                    'Betsinat Amare',
+                  Text(
+                    user.name,
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 20,
@@ -77,9 +80,9 @@ class DashboardScreen extends StatelessWidget {
               CircleAvatar(
                 radius: 24,
                 backgroundColor: AppColors.academicBlue,
-                child: const Text(
-                  'BA',
-                  style: TextStyle(
+                child: Text(
+                  user.name.substring(0, 1).toUpperCase(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -165,9 +168,9 @@ class _QuickActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

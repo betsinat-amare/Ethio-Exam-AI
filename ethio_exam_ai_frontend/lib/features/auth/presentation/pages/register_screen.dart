@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/user_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,9 +14,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  String _selectedGrade = 'Grade 12';
-
-  final List<String> _grades = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+  int _selectedGrade = 12;
+  String _selectedStream = 'Natural';
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +47,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 48),
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Full Name',
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Email Address',
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -61,32 +62,91 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Password',
                 ),
                 obscureText: true,
               ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _selectedGrade,
-                decoration: InputDecoration(
-                  hintText: 'Grade',
+              const SizedBox(height: 24),
+              const Text(
+                'Select Grade',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
                 ),
-                items: _grades.map((grade) {
-                  return DropdownMenuItem(
-                    value: grade,
-                    child: Text(grade),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [9, 10, 11, 12].map((grade) {
+                  final isSelected = _selectedGrade == grade;
+                  return GestureDetector(
+                    onTap: () => setState(() => _selectedGrade = grade),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.academicBlue : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? AppColors.academicBlue : Colors.grey.shade300,
+                        ),
+                      ),
+                      child: Text(
+                        'Grade $grade',
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : AppColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedGrade = value!;
-                  });
-                },
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Select Stream',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _StreamCard(
+                      title: 'Natural',
+                      icon: Icons.science,
+                      selected: _selectedStream == 'Natural',
+                      onTap: () => setState(() => _selectedStream = 'Natural'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _StreamCard(
+                      title: 'Social',
+                      icon: Icons.public,
+                      selected: _selectedStream == 'Social',
+                      onTap: () => setState(() => _selectedStream = 'Social'),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  final userProvider = context.read<UserProvider>();
+                  userProvider.updateProfile(
+                    name: _nameController.text.isEmpty ? 'Student' : _nameController.text,
+                    grade: _selectedGrade,
+                    stream: _selectedStream == 'Natural'
+                        ? StudentStream.natural
+                        : StudentStream.social,
+                  );
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.growthGreen,
                 ),
@@ -114,6 +174,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StreamCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _StreamCard({
+    required this.title,
+    required this.icon,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.academicBlue : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: selected ? AppColors.academicBlue : Colors.grey.shade300,
+          ),
+          boxShadow: [
+            if (selected)
+              BoxShadow(
+                color: AppColors.academicBlue.withValues(alpha: 0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: selected ? Colors.white : AppColors.academicBlue,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: selected ? Colors.white : AppColors.textPrimary,
+              ),
+            ),
+          ],
         ),
       ),
     );

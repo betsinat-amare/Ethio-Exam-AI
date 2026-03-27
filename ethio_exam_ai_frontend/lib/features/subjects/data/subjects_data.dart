@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
+enum SubjectStream { common, natural, social }
+
 class Subject {
   final String name;
   final String emoji;
   final Color color;
   final List<String> chapters;
+  final SubjectStream stream;
 
   const Subject({
     required this.name,
     required this.emoji,
     required this.color,
     required this.chapters,
+    required this.stream,
   });
 }
 
@@ -46,6 +50,7 @@ class SubjectsData {
         'Algebra', 'Geometry', 'Trigonometry',
         'Calculus', 'Statistics', 'Probability',
       ],
+      stream: SubjectStream.common,
     ),
     Subject(
       name: 'Physics',
@@ -55,6 +60,7 @@ class SubjectsData {
         'Mechanics', 'Thermodynamics', 'Waves & Optics',
         'Electricity', 'Magnetism', 'Modern Physics',
       ],
+      stream: SubjectStream.natural,
     ),
     Subject(
       name: 'Chemistry',
@@ -64,6 +70,7 @@ class SubjectsData {
         'Atomic Structure', 'Chemical Bonding', 'Stoichiometry',
         'Acids & Bases', 'Organic Chemistry', 'Electrochemistry',
       ],
+      stream: SubjectStream.natural,
     ),
     Subject(
       name: 'Biology',
@@ -73,6 +80,7 @@ class SubjectsData {
         'Cell Biology', 'Genetics', 'Evolution',
         'Ecology', 'Human Physiology', 'Plant Biology',
       ],
+      stream: SubjectStream.natural,
     ),
     Subject(
       name: 'English',
@@ -82,6 +90,7 @@ class SubjectsData {
         'Reading Comprehension', 'Grammar', 'Vocabulary',
         'Writing Skills', 'Literature', 'Communication',
       ],
+      stream: SubjectStream.common,
     ),
     Subject(
       name: 'Civics',
@@ -91,6 +100,7 @@ class SubjectsData {
         'Ethiopian Constitution', 'Democracy & Governance',
         'Human Rights', 'Federal System', 'International Relations',
       ],
+      stream: SubjectStream.common,
     ),
     Subject(
       name: 'History',
@@ -100,6 +110,7 @@ class SubjectsData {
         'Ancient Ethiopia', 'Medieval Period', 'Modern Period',
         'African History', 'World History', 'Independence Movements',
       ],
+      stream: SubjectStream.social,
     ),
     Subject(
       name: 'Geography',
@@ -109,6 +120,7 @@ class SubjectsData {
         'Physical Geography', 'Human Geography', 'Climate',
         'Ethiopian Geography', 'Economic Geography', 'Maps & Cartography',
       ],
+      stream: SubjectStream.social,
     ),
   ];
 
